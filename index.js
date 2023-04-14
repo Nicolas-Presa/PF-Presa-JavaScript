@@ -46,13 +46,9 @@ bebidas.push(cocaCola, cocaZero, sprite, spriteZero, fanta, agua, heineken, coro
 /** TODOS LOS PRODCUTOS */
 const todosLosProductos = hamburguesas.concat(acompaniamientos, bebidas);
 
-/** todosLosProductos.forEach(producto => {
-    console.log(producto.nombre, producto.precio);
-}) **/
-
 
 const cuerpo = document.querySelector("#cuerpo");
-const heroContenedor = document.querySelector("#hero-contenedor");
+const heroContenedor = document.querySelector(".hero-contenedor");
 const heroBotonProducto = document.querySelector("#hero-boton-producto");
 const heroBotonTodos = document.querySelector("#hero-boton-todos");
 const heroTexto = document.querySelector("#hero-texto");
@@ -61,6 +57,39 @@ const heroBotonAcompaniamiento = document.querySelector("#hero-boton-acompaniami
 const heroBotonBebidas = document.querySelector("#hero-boton-bebidas");
 const heroBotonTodosLosProductos = document.querySelector("#hero-boton-todolosproductos");
 
+
+function regresar() {
+    cuerpo.innerHTML = "";
+    cuerpo.classList.remove("cuerpo");
+    const div = document.createElement("div");
+    div.classList.add("hero-contenedor");
+    div.innerHTML = `
+        <div id="hero-texto" class="hero-texto">
+        <p>No te conformes con cantidad, busca calidad, y no te pierdas esta oportunidad</p>
+    </div>
+    <div id="hero-boton-producto" class="hero-boton-producto">
+        <button id="hero-boton-hamburguesa" class="hero-boton">Hamburguesas</button>
+        <button id="hero-boton-acompaniamiento" class="hero-boton">Acompañamientos</button>
+        <button id="hero-boton-bebidas" class="hero-boton">Bebidas</button>
+    </div>
+    <div id="hero-boton-todos" class="hero-boton-todos">
+        <button id="hero-boton-todolosproductos" class="hero-boton">Todos los productos</button>
+    </div>
+    `
+    const heroContenedor = document.querySelector(".hero-contenedor");
+    const heroBotonProducto = document.querySelector("#hero-boton-producto");
+    const heroBotonTodos = document.querySelector("#hero-boton-todos");
+    const heroTexto = document.querySelector("#hero-texto");
+    const heroBotonHamburguesa = document.querySelector("#hero-boton-hamburguesa");
+    const heroBotonAcompaniamiento = document.querySelector("#hero-boton-acompaniamiento");
+    const heroBotonBebidas = document.querySelector("#hero-boton-bebidas");
+    const heroBotonTodosLosProductos = document.querySelector("#hero-boton-todolosproductos");
+
+    cuerpo.append(div);
+    
+    heroBotonHamburguesa.addEventListener("click", seleccionDeHamburguesas);
+
+}
 
 function seleccionDeHamburguesas() {
     const botonRegresar = document.createElement("button");
@@ -84,6 +113,8 @@ function seleccionDeHamburguesas() {
         `
         cuerpo.append(botonRegresar);
         cuerpo.append(div);
+
+        botonRegresar.addEventListener("click", regresar);
     })
 }
 
