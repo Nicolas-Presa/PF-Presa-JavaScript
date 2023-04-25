@@ -53,36 +53,118 @@ const numerito = document.querySelector("#numerito");
 
 verMiCarrito.addEventListener("click", verCarritoDeCompras);
 
-const productosEnCarrito = [];
+let productosEnCarrito;
+
+let productosEnCarritoLS = localStorage.getItem("productos-en-carrito");
+
+if(productosEnCarritoLS){
+    productosEnCarrito = JSON.parse(productosEnCarritoLS);
+    acutalizarNumerito();
+}else{
+    productosEnCarrito = [];
+}
+
+
 
 function verCarritoDeCompras(){
-    cuerpo.innerHTML = "";
+    let productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito"));
+
     
-    const botonRegresar = document.createElement("button");
-    botonRegresar.classList.add("boton-regresar");
-    botonRegresar.innerText = "Regresar";
+    if(productosEnCarrito && productosEnCarrito.length > 0){
+        cuerpo.innerHTML = "";
+        cuerpo.classList.remove("hero-cuerpo2");
+        cuerpo.classList.remove("hero-cuerpo3");
+        cuerpo.classList.remove("hero-cuerpo4");
 
-    productosEnCarrito.forEach(producto => {
-        cuerpo.classList.add("hero-cuerpo5")
-        const div = document.createElement("div");
-        div.classList.add("hero-contenedor2");
-        div.innerHTML = `
-            <div class="producto">
-                <img class="producto__imagen" src= "${producto.imagen}" alt="${producto.nombre}">
-                <div class="producto__detalles">
-                    <h3 class="producto__titulo">${producto.nombre}</h3>
-                    <p class="producto__precio">$${producto.precio}</p>
-                    <button class="producto-eliminar" id="${producto.id}">Eliminar</button>
-                </div>
+        const botonRegresar = document.createElement("button");
+        botonRegresar.classList.add("boton-regresar2");
+        botonRegresar.innerText = "Regresar";
+
+        const botonComprar = document.createElement("button");
+        botonComprar.classList.add("boton-comprar");
+        botonComprar.innerText = "Comprar";
+
+        
+
+        productosEnCarrito.forEach(producto => {
+            cuerpo.classList.add("hero-cuerpo5");
+            const div = document.createElement("div");
+            div.classList.add("hero-contenedor3");
+            div.innerHTML = `
+            <div class="imagen">
+            <img class="imagen__producto" src="${producto.imagen}" alt="${producto.nombre}">
+        </div>
+        <div class="titulo">
+            <h1 class="titulo-producto">Titulo</h1>
+            <p>${producto.nombre}</p>
+        </div>
+        <div class="cantidad">
+            <h2>cantidad</h2>
+            <p>${producto.cantidad}</p>
+        </div>
+        <div class="precio">
+            <h3>precio</h3>
+            <p>${producto.precio}</p>
+        </div>
+        <div class="subtotal">
+            <h4>subtotal</h4>
+            <p>${producto.precio*producto.cantidad}</p>
+        </div>
+            <div class="eliminar">
+                <button id="${producto.id}" class="boton-eliminar">Eliminar<button/>
             </div>
-        `
-        cuerpo.append(botonRegresar);
-        cuerpo.append(div);
+            `
 
-        botonRegresar.addEventListener("click", mostrarMain);
+
+            cuerpo.append(div);
+            cuerpo.append(botonRegresar);
+            cuerpo.append(botonComprar);
+    
+            botonRegresar.addEventListener("click", mostrarMain);
+            botonComprar.addEventListener("click", compraRealizada);
+
+            function compraRealizada(){
+                Swal.fire(
+                    'Gracias por tu compra',
+                    'Su Pedido sera entregado en 30 minutos!',
+                    'success'
+                ).then
+                productosEnCarrito.length = 0;
+                localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+                mostrarMain();
+                }
+
+        })}else{
+        Swal.fire({
+            title: 'Tu carrito esta vacio',
+            text: 'Seleccione algun producto para poder realizar la compra',
+            icon: 'error',
+            confirmButtonText: 'Cerrar'
+        }).then(mostrarMain());
+    }
+
+    actualizarBotonesEliminar();
+}
+
+
+function actualizarBotonesEliminar(){
+    botonesEliminar = document.querySelectorAll(".boton-eliminar");
+
+    botonesEliminar.forEach(boton => {
+        boton.addEventListener("click", eliminarDelCarrito);
     })
 }
 
+function eliminarDelCarrito(e){
+    const idBoton = e.currentTarget.id;
+    const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
+
+    productosEnCarrito.splice(index, 1);
+    verCarritoDeCompras();
+
+    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+    acutalizarNumerito();
+}
 
 
 

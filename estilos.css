@@ -186,3 +186,102 @@
     background-position: center;
     background-size: cover;
 }
+
+.hero-cuerpo5{
+    background-image: url("./Image/FONDO.jpg");
+    min-height: 100vh;
+}
+
+
+.hero-contenedor3{
+    display: flex;
+    padding: 10px;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
+    width: 100%;
+    height: auto;
+}
+
+.imagen{
+    width: 10%;
+    height: auto;
+    background-color: rgb(141, 141, 141);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.imagen__producto{
+    width: 100%;
+    height: auto;
+}
+
+.titulo{
+    width: 25%;
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+    background-color: rgb(141, 141, 141);
+    border-radius: 10px;
+}
+
+.titulo-producto{
+    font-size: 20px;
+}
+
+.cantidad{
+    width: 10%;
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    background-color: rgb(141, 141, 141);
+    border-radius: 10px;
+}
+
+.precio{
+    width: 10%;
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    background-color: rgb(141, 141, 141);
+    border-radius: 10px;
+}
+
+.subtotal{
+    width: 10%;
+    padding: 10px;
+    text-align: center;
+    font-size: 15px;
+    background-color: rgb(141, 141, 141);
+    border-radius: 10px;
+}
+
+.eliminar{
+    width: 10%;
+    text-align: center;
+}
+
+.boton-eliminar{
+    background-color: rgb(141, 141, 141);
+    padding: 10px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
+.boton-regresar2{
+    width: 100%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: rgb(141, 141, 141);
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.boton-comprar{
+    width: 100%;
+    margin-bottom: 10px;
+    cursor: pointer;
+    background-color: rgb(141, 141, 141);
+    padding: 10px;
+    border-radius: 10px;
+}
