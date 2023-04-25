@@ -4,6 +4,14 @@
     box-sizing: border-box;
 }
 
+.ver-mi-carrito{
+    text-decoration: none;
+    color: black;
+    background-color: rgb(212, 212, 65);
+    padding: 10px;
+    border-radius: 30px;
+}
+
 
 .menu{
     display: flex;
@@ -38,7 +46,7 @@
 }
 
 
-.hero-contenedor{
+.cuerpo-hero{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -105,7 +113,7 @@
 }
 
 
-.cuerpo{
+.hero-cuerpo2{
     position: relative;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -155,7 +163,7 @@
     margin: 20px;
 }
 
-.cuerpo2{
+.hero-cuerpo3{
     position: relative;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -167,7 +175,7 @@
     background-size: cover;
 }
 
-.cuerpo3{
+.hero-cuerpo4{
     position: relative;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
