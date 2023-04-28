@@ -51,9 +51,7 @@ const cuerpo = document.querySelector("#cuerpo");
 const verMiCarrito = document.querySelector(".ver-mi-carrito");
 const numerito = document.querySelector("#numerito");
 
-verMiCarrito.addEventListener("click", verCarritoDeCompras);
-
-let productosEnCarrito;
+let productosEnCarrito = [];
 
 let productosEnCarritoLS = localStorage.getItem("productos-en-carrito");
 
@@ -65,7 +63,7 @@ if(productosEnCarritoLS){
 }
 
 
-
+verMiCarrito.addEventListener("click", verCarritoDeCompras);
 function verCarritoDeCompras(){
     let productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito"));
 
@@ -130,8 +128,9 @@ function verCarritoDeCompras(){
                     'success'
                 ).then
                 productosEnCarrito.length = 0;
-                localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
                 mostrarMain();
+                acutalizarNumerito();
+                localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
                 }
 
         })}else{
@@ -146,6 +145,10 @@ function verCarritoDeCompras(){
     actualizarBotonesEliminar();
 }
 
+function acutalizarNumerito() {
+    let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
+    numerito.innerText = nuevoNumerito;
+}
 
 function actualizarBotonesEliminar(){
     botonesEliminar = document.querySelectorAll(".boton-eliminar");
@@ -161,9 +164,9 @@ function eliminarDelCarrito(e){
 
     productosEnCarrito.splice(index, 1);
     verCarritoDeCompras();
+    acutalizarNumerito();
 
     localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
-    acutalizarNumerito();
 }
 
 
@@ -195,13 +198,9 @@ function agregarAlCarrito(e){
     localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
 }
 
-function acutalizarNumerito() {
-    let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
-    numerito.innerText = nuevoNumerito;
-}
 
 
-
+/////////////////////////////////////ESTRUCTURA QUE FUNCIONA/////////////////////////////////////////
 
 function mostrarMain() {
     cuerpo.innerHTML = "";
@@ -238,6 +237,8 @@ heroBotonHamburguesa.addEventListener("click", () => seleccionDeHamburguesas());
 heroBotonAcompaniamiento.addEventListener("click", () => seleccionDeAcompaniamiento());
 heroBotonBebidas.addEventListener("click", () => seleccionDeBebidas());
 heroBotonTodosLosProductos.addEventListener("click", () => seleccionTodo());
+
+acutalizarNumerito();
 }
 mostrarMain();
 
