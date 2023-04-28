@@ -51,22 +51,12 @@ const cuerpo = document.querySelector("#cuerpo");
 const verMiCarrito = document.querySelector(".ver-mi-carrito");
 const numerito = document.querySelector("#numerito");
 
-let productosEnCarrito = [];
-
-let productosEnCarritoLS = localStorage.getItem("productos-en-carrito");
-
-if(productosEnCarritoLS){
-    productosEnCarrito = JSON.parse(productosEnCarritoLS);
-    acutalizarNumerito();
-}else{
-    productosEnCarrito = [];
-}
+let productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito")) || []; 
 
 
 verMiCarrito.addEventListener("click", verCarritoDeCompras);
-function verCarritoDeCompras(){
-    let productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito"));
 
+function verCarritoDeCompras(){
     
     if(productosEnCarrito && productosEnCarrito.length > 0){
         cuerpo.innerHTML = "";
@@ -110,7 +100,7 @@ function verCarritoDeCompras(){
         </div>
             <div class="eliminar">
                 <button id="${producto.id}" class="boton-eliminar">Eliminar<button/>
-            </div>
+        </div>
             `
 
 
@@ -126,11 +116,12 @@ function verCarritoDeCompras(){
                     'Gracias por tu compra',
                     'Su Pedido sera entregado en 30 minutos!',
                     'success'
-                ).then
+                ).then 
+                setTimeout(() =>{
                 productosEnCarrito.length = 0;
-                mostrarMain();
                 acutalizarNumerito();
-                localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+                mostrarMain();
+                localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));}, 3000);
                 }
 
         })}else{
@@ -170,10 +161,6 @@ function eliminarDelCarrito(e){
 }
 
 
-
-
-
-
 function actualizarBotonesAgregar(){
     productoAgregar = document.querySelectorAll(".producto-agregar");
 
@@ -194,13 +181,11 @@ function agregarAlCarrito(e){
         productosEnCarrito.push(productoAgregado);
     }
 
-    acutalizarNumerito();
     localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
+    acutalizarNumerito();
 }
 
 
-
-/////////////////////////////////////ESTRUCTURA QUE FUNCIONA/////////////////////////////////////////
 
 function mostrarMain() {
     cuerpo.innerHTML = "";
@@ -241,9 +226,6 @@ heroBotonTodosLosProductos.addEventListener("click", () => seleccionTodo());
 acutalizarNumerito();
 }
 mostrarMain();
-
-
-
 
 
 function seleccionDeHamburguesas() {

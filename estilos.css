@@ -189,6 +189,8 @@
 
 .hero-cuerpo5{
     background-image: url("./Image/FONDO.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     min-height: 100vh;
 }
 
@@ -285,3 +287,4 @@
     padding: 10px;
     border-radius: 10px;
 }
+
