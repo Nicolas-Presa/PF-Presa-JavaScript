@@ -12,17 +12,31 @@
     <header>
     <div class="menu">
         <img class="logo" src="./Image/logo-Hamburguesa.png" alt="Logo">
-        <h1 class="titulo-header">Burger Party</h1>
-        <div class="carrito">
-            <img class="carrito-imagen" src="./Image/carrito-de-compra.png" alt="Logo">
-            <button class="ver-mi-carrito">Ver mi carrito <span id="numerito" class="numerito">0</span></button>
+        <h1 class="title">Burger Party</h1>
+        <div class="cart__header">
+            <img class="cart__img" src="./Image/carrito-de-compra.png" alt="Logo">
+            <button class="cart__button">Ver mi carrito <span id="cart__quantity" class="cart__quantity">0</span></button>
         </div>
     </div>
 </header>
 
-<main>
-    <div id="cuerpo"></div>
+
+<main class="background__container">
+    <div class="hero__container">
+        <div id="hero__text" class="hero__text">
+            <p>No te conformes con cantidad, busca calidad, y no te pierdas esta oportunidad</p>
+        </div>
+        <div id="hero__buttons" class="hero__buttons">
+            <button id="hamburguesa" class="button">Hamburguesas</button>
+            <button id="acompaniamiento" class="button">Acompañamientos</button>
+            <button id="bebida" class="button">Bebidas</button>
+        </div>
+        <div id="hero__button__all" class="hero__button__all">
+            <button id="todos" class="button">Todos los productos</button>
+        </div>
+    </div>
 </main>
+
 
 <footer>
     <div class="footer">

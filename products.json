@@ -1,0 +1,127 @@
+[
+    {
+        "name": "Hamburguesa Simple",
+        "description": "Medallon de carne 90gr y queso cheddar",
+        "price": 1500,
+        "thumbnails": "./image/Hamburguesa-Simple.jpg",
+        "category": "hamburguesa",
+        "id": 1
+    },
+
+    {
+        "name": "Hamburguesa Grande",
+        "description": "Medallon de carne 90gr, Cheddar y Bacon",
+        "price": 2000,
+        "thumbnails": "./Image/Hamburguesa-CheddarYBacon.jpg",
+        "category": "hamburguesa",
+        "id": 2
+    },
+
+    {
+        "name": "Hamburguesa Completa",
+        "description": "Medallon de carne 90gr con Cheddar y Bacon, Lechuga y Tomate",
+        "price": 2500,
+        "thumbnails": "./Image/Hamburguesa-QuesoLechugaYTomate.jpg",
+        "category": "hamburguesa",
+        "id": 3 
+    },
+
+    {
+        "name": "Hamburguesa Especial",
+        "description": "Medaloon de carne 90gr con Cheddar y Bacon, Lechuga y Tomate, Salsa especial La Fiesta",
+        "price": 3000,
+        "thumbnails": "./Image/Hamburguesa-Especial.jpg",
+        "category": "hamburguesa",
+        "id": 4
+    },
+
+    {
+        "name": "Papas Simples",
+        "description": "Papas fritas con Cheddar",
+        "price": 500,
+        "thumbnails": "./Image/Papas-ConCheddar.jpg",
+        "category": "acompañamiento",
+        "id": 5
+    },
+
+    {
+        "name": "Papas Completas",
+        "description": "Papas fritas con Cheddar, Bacon y Verdeo",
+        "price": 1000,
+        "thumbnails": "./Image/Papas-CheddarBaconYVerdeo.jpg",
+        "category": "acompaniamiento",
+        "id": 6
+    },
+
+    {
+        "name": "Nachos",
+        "description": "Nachos con Cheddar",
+        "price": 600,
+        "thumbnails": "./Image/Nachos-ConCheddar.webp",
+        "category": "acompaniamiento",
+        "id": 7
+    },
+
+    {
+        "name": "Ensalada",
+        "description": "Ensalada con Lechuga, Tomate, Cebolla y Zanahoria",
+        "price": 1000,
+        "thumbnails": "./Image/Ensalada.jpg",
+        "category": "acompaniamiento",
+        "id": 8
+    },
+
+    {
+        "name": "Coca Cola",
+        "description": "",
+        "price": 500,
+        "thumbnails": "./Image/Coca.jpg",
+        "category": "bebida",
+        "id": 9
+    },
+
+    {
+        "name": "Coca Zero",
+        "description": "",
+        "price": 500,
+        "thumbnails": "./Image/CocaZero.jpg",
+        "category": "bebida",
+        "id": 10
+    },
+
+    {
+        "name": "Sprite",
+        "description": "",
+        "price": 500,
+        "thumbnails": "./Image/Sprite.jpg",
+        "category": "bebida",
+        "id": 11
+    },
+
+    {
+        "name": "Cerveza Heineken",
+        "description": "",
+        "price": 600,
+        "thumbnails": "./Image/CervezaHeineken.jpg",
+        "category": "bebida",
+        "id": 12
+    },
+
+    {
+        "name": "Cerveza Corona",
+        "description": "",
+        "price": 700,
+        "thumbnails": "./Image/CervezaCorona.jpg",
+        "category": "bebida",
+        "id": 13
+    },
+
+    {
+        "name": "Cerveza Schneider",
+        "description": "",
+        "price": 600,
+        "thumbnails": "./Image/Cerveza-Schneider.jpg",
+        "category": "bebida",
+        "id": 14
+    }
+]

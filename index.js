@@ -1,350 +1,228 @@
-class Producto{
-    constructor(id, nombre, ingredientes, precio, imagen){
-        this.id = id;
-        this.imagen = imagen
-        this.nombre = nombre;
-        this.ingredientes = ingredientes;
-        this.precio = precio;
-    }
+let products = []
+let cart = JSON.parse(localStorage.getItem('product-in-cart')) || [];
+
+fetch("./products.json")
+    .then(response => response.json())
+    .then(data => {
+        products = data;
+        productsButtons()
+        updateQuantity()
+    })
+
+const title = document.querySelector('.title');
+const cartButton = document.querySelector('.cart__button');
+const background = document.querySelector('.background__container');
+const main = document.querySelector('.hero__container');
+const quantity = document.querySelector('.cart__quantity');
+
+
+
+function productos(productOption) {
+    main.innerHTML = '';
+    main.classList.remove('hero__container', 'cart__container')
+    main.classList.add('products__container');
+    const backButton = document.createElement('div');
+
+    productOption.forEach((product) => {
+        const div = document.createElement('div');
+        div.classList.add('product');
+        div.innerHTML = `
+        <div class="container">
+        <img class="product__thumbnails" src=${product.thumbnails} alt="image">
+        <h1 class="product__title"> ${product.name} </h1>
+        <p class="product__price"> $${product.price} </p>
+        <button class="product__add" id=${product.id}> Agregar al carrito </button>
+        </div>
+        `
+        main.append(div)
+
+        backButton.innerHTML = `
+        <button class="button__back"> Regresar </button>
+        `
+        main.appendChild(backButton);
+    })
+    updateButton();
+
 }
 
-const hamburguesaSimple = new Producto ("hamburguesa01", "Hamburguesa Simple", "Medallon de carne 90gr y Queso Cheddar", 1500, "./Image/Hamburguesa-Simple.jpg");
-const hamburguesaGrande = new Producto ("hamburguesa02","Hamburguesa Grande", "Medallon de carne 90gr, Cheddar y Bacon", 2000, "./Image/Hamburguesa-CheddarYBacon.jpg");
-const hamburguesaCompleta = new Producto ("hamburguesa03","Hamburguesa Completa", "Medallon de carne 90gr con Cheddar y Bacon, Lechuga y Tomate", 2500, "./Image/Hamburguesa-QuesoLechugaYTomate.jpg");
-const hamburguesaEspecial = new Producto ("hamburguesa04","Hamburguesa Especial", "Medallon de carne 90g con Cheddar y Bacon, Lechuga, Tomate y salsa especial La Fiesta", 3000, "./Image/Hamburguesa-Especial.jpg");
+function productsButtons(){
+    const buttons = document.querySelectorAll('.button');
 
+    buttons.forEach((button) => {
+        button.addEventListener('click', (e) => {
+            if(e.currentTarget.id != 'todos'){
+                const productButton = products.filter(product => product.category === e.currentTarget.id)
+                productos(productButton);
+            }else{
+                productos(products);
+            }
+        })
+    })
+}
 
+function updateButton() {
+    addButton = document.querySelectorAll('.product__add');
+    backButton = document.querySelector('.button__back');
+    buttonCart = document.querySelector('#button__back');
+    buttonPay = document.querySelector('#button__pay');
+    buttonEmpty = document.querySelector('#button__empty');
+    buttonDelete = document.querySelectorAll('.button__delete');
 
-const papasSimple = new Producto ("acompaniamiento01", "Papas Simple", "Papas fritas con queso Cheddar", 500, "./Image/Papas-ConCheddar.jpg");
-const papasCompletas = new Producto ("acompaniamiento02", "Papas Completas", "Papas fritas con Cheddar, Bacon y Verdeo", 1000, "./Image/Papas-CheddarBaconYVerdeo.jpg");
-const nachos = new Producto ("acompaniamiento03", "Nachos", "Nachos con queso Cheddar", 600, "./Image/Nachos-ConCheddar.webp");
-const ensalada = new Producto ("acompaniamiento04", "Ensalada", "Ensalada con Lechuga, Tomate, Cebolla y condimento", 1000, "./Image/Ensalada.jpg");
+    addButton.forEach(button => {
+        button.addEventListener('click', addCart);
+    });
 
+    backButton?.addEventListener('click', back);
+    buttonCart?.addEventListener('click', back);
+    buttonPay?.addEventListener('click', pay);
+    buttonEmpty?.addEventListener('click', empty);
 
-const cocaCola = new Producto ("bebida01", "Coca Cola", "", 500, "./Image/Coca.jpg");
-const cocaZero = new Producto ("bebida02", "Coca Zero", "", 500, "./Image/CocaZero.jpg");
-const sprite = new Producto ("bebida03", "Sprite", "", 500, "./Image/Sprite.jpg");
-const spriteZero = new Producto ("bebida04", "Sprite Zero", "", 500, "./Image/Sprite.jpg");
-const agua = new Producto ("bebida05", "Agua", "", 400, "./Image/Agua.jpg");
-const heineken = new Producto ("bebida06", "Cerveza Heineken", "", 600, "./Image/CervezaHeineken.jpg");
-const corona = new Producto ("bebida07", "Cerveza Corona", "", 700, "./Image/CervezaCorona.jpg");
-const fanta = new Producto ("bebida08", "Fanta", "", 500, "./Image/fanta.jpg");
-const schneider = new Producto ("bebida09", "Schneider", "", 600, "./Image/Cerveza-Schneider.jpg");
+    buttonDelete.forEach(button => {
+        button.addEventListener('click', removeFromCart);
+    });
+}
 
-/** HAMBURGUESAS */
-const hamburguesas = [];
-hamburguesas.push(hamburguesaSimple, hamburguesaGrande, hamburguesaCompleta, hamburguesaEspecial);
+function addCart(e) {
+    const id = parseInt(e.currentTarget.id);
+    const addProduct = products.find(product => product.id === id)
+    const indexProduct = cart.findIndex(product => product.id === id)
 
-/** ACOMPAÑAMIENTO */
-const acompaniamientos = [];
-acompaniamientos.push(papasSimple, papasCompletas, nachos, ensalada);
+    if(indexProduct != -1){
+        cart[indexProduct].cantidad += 1;
+    }else{
+        addProduct.cantidad = 1
+        cart.push(addProduct)
+    }
 
-/** BEBIDAS */
-const bebidas = [];
-bebidas.push(cocaCola, cocaZero, sprite, spriteZero, fanta, agua, heineken, corona, schneider);
+    updateQuantity();
+    localStorage.setItem('product-in-cart', JSON.stringify(cart));
+}
 
-/** TODOS LOS PRODCUTOS */
-const todosLosProductos = hamburguesas.concat(acompaniamientos, bebidas);
+function back() {
+    main.innerHTML = '';
+    main.classList.remove('products__container', 'cart__container');
+    main.classList.add('hero__container');
 
+    main.innerHTML = `
+    <div id="hero__text" class="hero__text">
+        <p>No te conformes con cantidad, busca calidad, y no te pierdas esta oportunidad</p>
+    </div>
+    <div id="hero__buttons" class="hero__buttons">
+        <button id="hamburguesa" class="button">Hamburguesas</button>
+        <button id="acompaniamiento" class="button">Acompañamientos</button>
+        <button id="bebida" class="button">Bebidas</button>
+    </div>
+    <div id="hero__button__all" class="hero__button__all">
+        <button id="todos" class="button">Todos los productos</button>
+    </div>
+    `
+    productsButtons();
+}
 
-const cuerpo = document.querySelector("#cuerpo");
-const verMiCarrito = document.querySelector(".ver-mi-carrito");
-const numerito = document.querySelector("#numerito");
-
-let productosEnCarrito = JSON.parse(localStorage.getItem("productos-en-carrito")) || []; 
-
-
-verMiCarrito.addEventListener("click", verCarritoDeCompras);
-
-function verCarritoDeCompras(){
-    
-    if(productosEnCarrito && productosEnCarrito.length > 0){
-        cuerpo.innerHTML = "";
-        cuerpo.classList.remove("hero-cuerpo2");
-        cuerpo.classList.remove("hero-cuerpo3");
-        cuerpo.classList.remove("hero-cuerpo4");
-
-        const botonRegresar = document.createElement("button");
-        botonRegresar.classList.add("boton-regresar2");
-        botonRegresar.innerText = "Regresar";
-
-        const botonComprar = document.createElement("button");
-        botonComprar.classList.add("boton-comprar");
-        botonComprar.innerText = "Comprar";
-
-        
-
-        productosEnCarrito.forEach(producto => {
-            cuerpo.classList.add("hero-cuerpo5");
-            const div = document.createElement("div");
-            div.classList.add("hero-contenedor3");
-            div.innerHTML = `
-            <div class="imagen">
-            <img class="imagen__producto" src="${producto.imagen}" alt="${producto.nombre}">
-        </div>
-        <div class="titulo">
-            <h1 class="titulo-producto">Titulo</h1>
-            <p>${producto.nombre}</p>
-        </div>
-        <div class="cantidad">
-            <h2>cantidad</h2>
-            <p>${producto.cantidad}</p>
-        </div>
-        <div class="precio">
-            <h3>precio</h3>
-            <p>${producto.precio}</p>
-        </div>
-        <div class="subtotal">
-            <h4>subtotal</h4>
-            <p>${producto.precio*producto.cantidad}</p>
-        </div>
-            <div class="eliminar">
-                <button id="${producto.id}" class="boton-eliminar">Eliminar<button/>
-        </div>
-            `
-
-
-            cuerpo.append(div);
-            cuerpo.append(botonRegresar);
-            cuerpo.append(botonComprar);
-    
-            botonRegresar.addEventListener("click", mostrarMain);
-            botonComprar.addEventListener("click", compraRealizada);
-
-            function compraRealizada(){
-                Swal.fire(
-                    'Gracias por tu compra',
-                    'Su Pedido sera entregado en 30 minutos!',
-                    'success'
-                ).then 
-                setTimeout(() =>{
-                productosEnCarrito.length = 0;
-                acutalizarNumerito();
-                mostrarMain();
-                localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));}, 3000);
-                }
-
-        })}else{
+function seeCart() {
+    if(cart.length <= 0){
         Swal.fire({
             title: 'Tu carrito esta vacio',
             text: 'Seleccione algun producto para poder realizar la compra',
             icon: 'error',
             confirmButtonText: 'Cerrar'
-        }).then(mostrarMain());
+                }).then(
+                    setTimeout(() => {
+                        cart = []
+                        updateQuantity();
+                        localStorage.setItem('product-in-cart', JSON.stringify(cart));
+                        back()
+                    }, 0)
+                );
+    }else{
+        main.innerHTML = '';
+        main.classList.remove('hero__container', 'products__container');
+        main.classList.add('cart__container');
+        const buttonsContainer = document.createElement('div');
+
+        cart.forEach((product) => {
+            const div = document.createElement('div');
+            div.classList.add('product__cart');
+            div.innerHTML = `
+            <h1 class="product__content"> ${product.name} </h1>
+            <p class="product__content"> Por unidad ${product.price} </p>
+            <p class="product__content"> ${product.cantidad} </p>
+            <span class="product__content"> Subtotal: ${product.price * product.cantidad} </span>
+            <button id="${product.id}" class="button__delete"> Eliminar producto </button>
+            `
+            main.append(div)
+
+        buttonsContainer.innerHTML = `
+        <div class="buttons__container">
+            <button id="button__back" class="button__cart"> Regresar </button>
+            <button id="button__pay" class="button__cart"> Pagar </button>
+            <span id="button__total" class="button__cart total">TOTAL: ${calculateTotal()} </span>
+            <button id="button__empty" class="button__cart"> Vaciar carrito </button>
+        </div>
+        `
+
+        main.appendChild(buttonsContainer);
+        })
+        
+    }
+    updateButton()
+}
+
+function updateQuantity() {
+    let nuevoNumerito = cart.reduce((acc, producto) => acc + producto.cantidad, 0);
+    quantity.innerText = nuevoNumerito;
+}
+
+function calculateTotal() {
+    return cart.reduce((total, product) => total + (product.price * product.cantidad), 0);
+}
+
+cartButton.addEventListener('click', seeCart);
+
+function pay() {
+    Swal.fire({
+        title: 'Gracias por realizar tu compra',
+        text: 'Su pedido sera entregado en los proximos 30 minutos',
+        icon: 'success',
+        confirmButtonText: 'Cerrar'
+            }).then(
+                setTimeout(() => {
+                    cart = []
+                    updateQuantity();
+                    localStorage.setItem('product-in-cart', JSON.stringify(cart));
+                    back()
+                }, 4000)
+            );
+}
+
+function empty() {
+    Swal.fire({
+        title: 'Acabas de vaciar tu carrito',
+        text: 'Seleccione productos nuevamente para continuar su compra',
+        confirmButtonText: 'Cerrar'
+            }).then(
+                setTimeout(() => {
+                    cart = []
+                    updateQuantity();
+                    localStorage.setItem('product-in-cart', JSON.stringify(cart));
+                    back()
+                }, 0)
+            );
+}
+
+function removeFromCart(e) {
+    const id = parseInt(e.currentTarget.id);
+    const indexProduct = cart.findIndex(product => product.id === id);
+
+    if (indexProduct !== -1) {
+        if (cart[indexProduct].cantidad > 1) {
+            cart[indexProduct].cantidad -= 1;
+        } else {
+            cart.splice(indexProduct, 1);
+        }
     }
 
-    actualizarBotonesEliminar();
+    updateQuantity();
+    localStorage.setItem('product-in-cart', JSON.stringify(cart));
+    seeCart();
 }
-
-function acutalizarNumerito() {
-    let nuevoNumerito = productosEnCarrito.reduce((acc, producto) => acc + producto.cantidad, 0);
-    numerito.innerText = nuevoNumerito;
-}
-
-function actualizarBotonesEliminar(){
-    botonesEliminar = document.querySelectorAll(".boton-eliminar");
-
-    botonesEliminar.forEach(boton => {
-        boton.addEventListener("click", eliminarDelCarrito);
-    })
-}
-
-function eliminarDelCarrito(e){
-    const idBoton = e.currentTarget.id;
-    const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
-
-    productosEnCarrito.splice(index, 1);
-    verCarritoDeCompras();
-    acutalizarNumerito();
-
-    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
-}
-
-
-function actualizarBotonesAgregar(){
-    productoAgregar = document.querySelectorAll(".producto-agregar");
-
-    productoAgregar.forEach(boton => {
-        boton.addEventListener("click", agregarAlCarrito);
-    });
-}
-
-function agregarAlCarrito(e){
-    const idBoton = e.currentTarget.id;
-    const productoAgregado = todosLosProductos.find(producto => producto.id === idBoton);
-
-    if(productosEnCarrito.some(producto => producto.id === idBoton)){
-        const index = productosEnCarrito.findIndex(producto => producto.id === idBoton);
-        productosEnCarrito[index].cantidad++;
-    } else{
-        productoAgregado.cantidad = 1;
-        productosEnCarrito.push(productoAgregado);
-    }
-
-    localStorage.setItem("productos-en-carrito", JSON.stringify(productosEnCarrito));
-    acutalizarNumerito();
-}
-
-
-
-function mostrarMain() {
-    cuerpo.innerHTML = "";
-    cuerpo.classList.remove("hero-cuerpo2");
-    cuerpo.classList.remove("hero-cuerpo3");
-    cuerpo.classList.remove("hero-cuerpo4");
-    const div = document.createElement("div");
-    div.classList.add("cuerpo-hero");
-    div.innerHTML = `
-    <div id="hero-texto" class="hero-texto">
-        <p>No te conformes con cantidad, busca calidad, y no te pierdas esta oportunidad</p>
-    </div>
-    <div id="hero-boton-producto" class="hero-boton-producto">
-        <button id="hero-boton-hamburguesa" class="hero-boton">Hamburguesas</button>
-        <button id="hero-boton-acompaniamiento" class="hero-boton">Acompañamientos</button>
-        <button id="hero-boton-bebidas" class="hero-boton">Bebidas</button>
-    </div>
-    <div id="hero-boton-todos" class="hero-boton-todos">
-        <button id="hero-boton-todolosproductos" class="hero-boton">Todos los productos</button>
-    </div>
-    `
-    cuerpo.append(div);
-
-const cuerpoHero = document.querySelector(".cuerpo-hero");
-const heroBotonProducto = document.querySelector("#hero-boton-producto");
-const heroBotonTodos = document.querySelector("#hero-boton-todos");
-const heroTexto = document.querySelector("#hero-texto");
-const heroBotonHamburguesa = document.querySelector("#hero-boton-hamburguesa");
-const heroBotonAcompaniamiento = document.querySelector("#hero-boton-acompaniamiento");
-const heroBotonBebidas = document.querySelector("#hero-boton-bebidas");
-const heroBotonTodosLosProductos = document.querySelector("#hero-boton-todolosproductos");
-
-heroBotonHamburguesa.addEventListener("click", () => seleccionDeHamburguesas());
-heroBotonAcompaniamiento.addEventListener("click", () => seleccionDeAcompaniamiento());
-heroBotonBebidas.addEventListener("click", () => seleccionDeBebidas());
-heroBotonTodosLosProductos.addEventListener("click", () => seleccionTodo());
-
-acutalizarNumerito();
-}
-mostrarMain();
-
-
-function seleccionDeHamburguesas() {
-    cuerpo.innerHTML = "";
-    
-    const botonRegresar = document.createElement("button");
-    botonRegresar.classList.add("boton-regresar");
-    botonRegresar.innerText = "Regresar";
-
-    hamburguesas.forEach(producto => {
-        cuerpo.classList.add("hero-cuerpo2")
-        const div = document.createElement("div");
-        div.classList.add("hero-contenedor2");
-        div.innerHTML = `
-            <div class="producto">
-                <img class="producto__imagen" src= "${producto.imagen}" alt="${producto.nombre}">
-                <div class="producto__detalles">
-                    <h3 class="producto__titulo">${producto.nombre}</h3>
-                    <p class="producto__precio">$${producto.precio}</p>
-                    <button class="producto-agregar" id="${producto.id}">Agregar</button>
-                </div>
-            </div>
-        `
-        cuerpo.append(botonRegresar);
-        cuerpo.append(div);
-
-        botonRegresar.addEventListener("click", mostrarMain);
-    })
-
-    actualizarBotonesAgregar();
-}
-
-function seleccionDeAcompaniamiento() {
-    cuerpo.innerHTML = "";
-
-    const botonRegresar = document.createElement("button");
-    botonRegresar.classList.add("boton-regresar");
-    botonRegresar.innerText = "Regresar";
-
-    acompaniamientos.forEach(producto => {
-        cuerpo.classList.add("hero-cuerpo2");
-        const div = document.createElement("div");
-        div.classList.add("hero-contenedor2");
-        div.innerHTML = `
-            <div class="producto">
-                <img class="producto__imagen" src= "${producto.imagen}" alt="${producto.nombre}">
-                <div class="producto__detalles">
-                    <h3 class="producto__titulo">${producto.nombre}</h3>
-                    <p class="producto__precio">$${producto.precio}</p>
-                    <button class="producto-agregar" id="${producto.id}">Agregar</button>
-                </div>
-            </div>
-        `
-        cuerpo.append(botonRegresar);
-        cuerpo.append(div);
-
-        botonRegresar.addEventListener("click", mostrarMain);
-    })
-
-    actualizarBotonesAgregar();
-}
-
-function seleccionDeBebidas() {
-    cuerpo.innerHTML = "";
-
-    const botonRegresar = document.createElement("button");
-    botonRegresar.classList.add("boton-regresar");
-    botonRegresar.innerText = "Regresar";
-
-    bebidas.forEach(producto => {
-        cuerpo.classList.add("hero-cuerpo3");
-        const div = document.createElement("div");
-        div.classList.add("hero-contenedor2");
-        div.innerHTML = `
-            <div class="producto">
-                <img class="producto__imagen" src= "${producto.imagen}" alt="${producto.nombre}">
-                <div class="producto__detalles">
-                    <h3 class="producto__titulo">${producto.nombre}</h3>
-                    <p class="producto__precio">$${producto.precio}</p>
-                    <button class="producto-agregar" id="${producto.id}">Agregar</button>
-                </div>
-            </div>
-        `
-        cuerpo.append(botonRegresar);
-        cuerpo.append(div);
-
-        botonRegresar.addEventListener("click", mostrarMain);
-    })
-
-    actualizarBotonesAgregar();
-}
-
-function seleccionTodo() {
-    cuerpo.innerHTML = "";
-
-    const botonRegresar = document.createElement("button");
-    botonRegresar.classList.add("boton-regresar");
-    botonRegresar.innerText = "Regresar";
-
-    todosLosProductos.forEach(producto => {
-        cuerpo.classList.add("hero-cuerpo4");
-        const div = document.createElement("div");
-        div.classList.add("hero-contenedor2");
-        div.innerHTML = `
-            <div class="producto">
-                <img class="producto__imagen" src= "${producto.imagen}" alt="${producto.nombre}">
-                <div class="producto__detalles">
-                    <h3 class="producto__titulo">${producto.nombre}</h3>
-                    <p class="producto__precio">$${producto.precio}</p>
-                    <button class="producto-agregar" id="${producto.id}">Agregar</button>
-                </div>
-            </div>
-        `
-        cuerpo.append(botonRegresar);
-        cuerpo.append(div);
-
-        botonRegresar.addEventListener("click", mostrarMain);
-    })
-
-    actualizarBotonesAgregar();
-}
-
